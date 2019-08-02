@@ -1,0 +1,93 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+@import "bulma";
+body {
+    background-color: #e8e8e821 !important;
+}
+
+button,
+.w3-button {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.w3-theme-d2,
+.w3-theme,
+.w3-theme-d1 {
+    background-color: #2e2e31 !important;
+}
+
+.simple_form input {
+    margin-bottom: 10px;
+}
+
+a {
+    color: #2d4e84;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.passAuthInput {
+    background-color: #d68585;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.avatar {
+    height: 60x;
+    width: 60px;
+    display: inline;
+}
+
+.w3-badgeM {
+    display: inline-block;
+    padding-left: 8px;
+    padding-right: 8px;
+    text-align: center;
+}
+
+.w3-theme-d2M {
+    color: #000!important;
+    background-color: #ccc!important;
+}
+
+#commentInput {
+    padding: 0px !important;
+    min-height: 50px !important;
+}
+
+#messageinput {
+    min-height: 70px !important;
+}
+
+.topgap {
+    margin-top: 10px;
+}
+
+hr {
+    background-color: #d4d2d2;
+    border: none;
+    display: block;
+    height: 1px;
+    margin: 1.0rem 0;
+    margin-top: 1rem;
+    margin-right: 0px;
+    margin-bottom: 1rem;
+    margin-left: 0px;
+}

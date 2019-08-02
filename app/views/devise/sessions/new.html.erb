@@ -1,0 +1,41 @@
+
+
+<%# <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %> 
+  <%# <div class="form-inputs"> %>
+    <%# <%= f.input :username, %>
+                <%# # required: false, %>
+                <%# autofocus: true, %>
+                <%# input_html: { autocomplete: "username" } %> 
+    <%# <%= f.input :password, %>
+                <%# required: false, %>
+                <%# input_html: { autocomplete: "current-password" } %> 
+    <%# <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %> 
+  <%# </div> %>
+
+  <%# <div class="form-actions"> %>
+    <%# <%= f.button :submit, "Log in" %> 
+  <%# </div> %>
+<%# <% end %> 
+
+
+  <div class="w3-container w3-card w3-light-grey w3-center" style="width:60%;margin:auto; max-width:650px;">
+  <p style="font-size: 28px;"> Log In </p>
+  <br>
+   <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|%>
+      <%= f.error_notification %>
+      <%= f.input :email, label: false,
+          input_html: {class: "w3-input"}, wrapper: false, style: "margin-bottom: 5px;",
+          label_html: {class: "label"}, placeholder: "E-Mail"             
+      %>
+      <%= f.input :password, label: false,
+          input_html: {class: "w3-input"}, wrapper: false,
+          label_html: {class: "label"}, placeholder: "Password"             
+      %>
+      <%= f.input :remember_me, wrapper: false, as: :boolean if devise_mapping.rememberable? %>
+      <hr>
+      <%= f.button :submit, "Log in", class: "w3-button w3-theme" %>
+    <% end %>
+
+<%= render "devise/shared/links" %>
+
+</div>

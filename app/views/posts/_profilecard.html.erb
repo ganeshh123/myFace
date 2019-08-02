@@ -1,0 +1,15 @@
+<div class="w3-card w3-round w3-white" style="margin-left: 10px; padding: 10px; ">
+        <div class="w3-container">
+         <h4 class="w3-center"><%= link_to current_user.name, "/users/#{current_user.id}" %></h4>
+         <hr>
+         <div class="w3-center" >
+         <% if current_user.avatar.attached? %>
+            <%= image_tag current_user.avatar, class: "w3-circle", :style => "height: 100px; width: 100px; display: inline;" %>
+          <% else %>
+          <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+          <% end %>
+         </div>
+         <hr>
+         <p class="w3-center"><em><%= link_to "@"+current_user.username, "/users/#{current_user.id}" %></em></p>
+        </div>
+      </div>

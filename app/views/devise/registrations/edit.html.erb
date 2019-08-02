@@ -1,0 +1,54 @@
+
+
+<div class="w3-container w3-card w3-light-grey w3-center" style="width:60%; margin:auto; max-width:650px;">
+  <p style="font-size: 28px;"> Settings </p>
+  <br>
+    <%= link_to "My Profile", "/users/#{current_user.id}", style: "font-size: 24px;" %>
+    <hr />
+   <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put}) do |f|%>
+      <%= f.error_notification %>
+      <%= f.input :username, label: false, required: true,
+          input_html: {class: "w3-input"}, wrapper: false, style: "margin-bottom: 5px;",
+          label_html: {class: "label"}, placeholder: "Username"             
+      %>
+      <%= f.input :name, label: false,
+          input_html: {class: "w3-input"}, wrapper: false, required: true,
+          label_html: {class: "label"}, placeholder: "Full Name"             
+      %>
+      <span>
+        <% if resource.avatar.attached? %>
+            <%= image_tag resource.avatar, class: "w3-circle avatar" %>
+        <% end %>
+      </span>
+      <%= f.file_field  :avatar, label:false, required: false %>
+      <br >
+      <br >
+      <br >
+      <%= f.input :email, label: false,
+          input_html: {class: "w3-input"}, wrapper: false, required: true,
+          label_html: {class: "label"}, placeholder: "E-Mail"             
+      %>
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
+      <% end %>
+      <%= f.input :password, label: false,
+          input_html: {class: "w3-input"}, wrapper: false, required: true,
+          label_html: {class: "label"}, placeholder: "New Password (Leave blank if you don't wish to change it)"             
+      %>
+      <%= f.input :password_confirmation, label: false,
+          input_html: {class: "w3-input"}, wrapper: false, required: true,
+          label_html: {class: "label"}, placeholder: "Confirm New Password (Leave blank if you don't wish to change it)"             
+      %>
+      
+      <hr>
+      <%= f.input :current_password, label: false,
+          input_html: {class: "w3-input passAuthInput"}, wrapper: false, required: true,
+          label_html: {class: "label"}, placeholder: "Enter your current password here to make changes"             
+      %>
+      <br />
+      <%= f.button :submit, "Update", class: "w3-button w3-theme" %>
+    <% end %>
+
+    <p><%= link_to "Delete my Account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+    
+  </div>

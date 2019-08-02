@@ -1,0 +1,19 @@
+<script>
+function scroll(){
+  var objDiv = document.getElementById("messagefeed");
+  objDiv.scrollTop = objDiv.scrollHeight;
+}
+</script>
+<div class="w3-row" style="max-width: 1024px; margin: auto;">
+<div class="w3-col m4" style="min-width: 250px;">
+    <% if user_signed_in? %>
+      <%= render 'posts/profilecard'%>
+    <% end %>
+</div>
+
+<div class="w3-col m7" style="min-width: 500px;">
+    <%= render 'chatbox'%>
+</div>
+
+
+</div>

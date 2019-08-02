@@ -1,0 +1,62 @@
+<div class="w3-card w3-round w3-white" style="margin-left: 10px; padding: 10px; ">
+  <div class="w3-container">
+    <h4 style="font-size: 24px;" class="w3-center"><%= link_to @user.name, "/users/#{@user.id}" %></h4>
+    <hr>
+    <div class="w3-center" >
+      <% if @user.avatar.attached? %>
+        <%= image_tag @user.avatar, class: "w3-circle", :style => "height: 150px; width: 150px; display: inline;" %>
+      <% else %>
+      <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+      <% end %>
+    </div>
+    <p class="w3-center"><em><%= link_to "@"+@user.username, "/users/#{@user.id}" %></em></p>
+
+    <hr /> 
+    <p style="text-align: center;"><%= link_to "Friends ("+@user.friends.size.to_s+")", "/users/#{@user.id}/friends" %></p>
+    <hr />
+
+    <div style="text-align: center;">
+
+    <% if @user!=current_user %>
+      <% if !current_user.friends_with?(@user) && !current_user.pending_friends.include?(@user) && !current_user.requested_friends.include?(@user)%>
+        <%= link_to "/users/add/#{@user.id}",  method: :put, class: "w3-button w3-theme-d2 w3-margin-bottom", style: "margin: auto;" do%>
+          <i class="fas fa-plus"></i>&nbsp;&nbsp;Send Friend Request
+        <% end %>
+      <% end %>
+
+      <% if !current_user.friends_with?(@user) && current_user.pending_friends.include?(@user) %>
+        <%= link_to "/users/cancelrequest/#{@user.id}",  method: :delete, class: "w3-button w3-theme-d2 w3-margin-bottom", style: "margin: auto;" do%>
+          <i class="fas fa-times"></i>&nbsp;&nbsp;Cancel Friend Request
+        <% end %>
+      <% end %>
+
+      <% if !current_user.friends_with?(@user) && current_user.requested_friends.include?(@user) %>
+        <%= link_to "/users/accept/#{@user.id}",  method: :put, class: "w3-button w3-theme-d2 w3-margin-bottom", style: "margin: auto;" do%>
+          <i class="fas fa-check"></i>&nbsp;&nbsp;Accept Friend Request
+        <% end %>
+      <% end %>
+
+      <% if !current_user.friends_with?(@user) && current_user.requested_friends.include?(@user) %>
+        <%= link_to "/users/reject/#{@user.id}",  method: :delete, class: "w3-button w3-theme-d2 w3-margin-bottom", style: "margin: auto;" do%>
+          <i class="fas fa-times"></i>&nbsp;&nbsp;Decline Friend Request
+        <% end %>
+      <% end %>
+
+
+      
+      <% if current_user.friends_with?(@user) %>
+        <%= link_to "/users/delete/#{@user.id}",  method: :delete, class: "w3-button w3-theme-d2 w3-margin-bottom", style: "margin: auto;" do%>
+          <i class="fas fa-times"></i>&nbsp;&nbsp;Remove from Friends
+        <% end %>
+        <%= link_to conversations_path(user1_id: current_user.id, user2_id: @user.id), method: :post, class: "w3-button w3-theme-d2 w3-margin-bottom", style: "margin: auto;" do%>
+            <i class="far fa-envelope"></i>&nbsp; Message
+        <% end %>
+      <% end %>
+    <% end %>
+
+    </div>
+
+
+
+  </div>
+</div>

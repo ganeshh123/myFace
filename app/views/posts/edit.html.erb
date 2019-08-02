@@ -1,0 +1,12 @@
+<% if user_signed_in? && current_user.id == @post.user_id %>
+    <%= render 'newpostform', post: @post %>
+
+    <br />
+    <br />
+
+    <%= link_to 'Show', @post %> |
+    <%= link_to 'Back', posts_path %>
+
+<% else %>
+    <% controller.redirect_to @post, alert: "You can't edit other people's posts." %>
+<% end %>

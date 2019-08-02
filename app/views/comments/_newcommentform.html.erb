@@ -1,0 +1,8 @@
+<%= simple_form_for([commentable, commentable.comments.build]) do |f| %>
+        <div class="field">
+            <div class="control">
+            <%= f.input :body, input_html: { class: 'textarea', id: 'commentInput'},  label: false, wrapper: false, placeholder: "Leave a comment..."   %>
+            </div>
+        </div>
+        <%= f.button :submit, 'Comment', class: "w3-button w3-theme" %> 
+<% end %>

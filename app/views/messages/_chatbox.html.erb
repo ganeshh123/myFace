@@ -1,0 +1,101 @@
+<div class="w3-card w3-round w3-white" style="margin-left: 10px; padding: 10px; min-width: 250px; width: 90%; margin-right: 10px;">
+    <% @user1 = User.find(Conversation.find(params[:conversation_id]).user1_id)%>
+    <% @user2 = User.find(Conversation.find(params[:conversation_id]).user2_id)%>
+
+    <% if current_user == @user1 %>
+    <div class="w3-left">
+        <% if @user2.avatar.attached? %>
+            <%= image_tag @user2.avatar, class: "w3-circle avatar w3-left w3-margin-right w3-left", :style => "display: inline;" %>
+        <% else %>
+            <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:80px">
+        <% end %>
+    </div>
+    <p style="font-size: 32px;">
+        <%= link_to @user2.name, "/users/#{@user2.id}"%>
+    </p>
+    <% end %>
+
+    <% if current_user == @user2 %>
+    <div class="w3-left">
+        <% if @user1.avatar.attached? %>
+            <%= image_tag @user1.avatar, class: "w3-circle avatar w3-left w3-margin-right w3-left", :style => "display: inline;" %>
+        <% else %>
+            <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:80px">
+        <% end %>
+    </div>
+    <p style="font-size: 32px;">
+        <%= link_to @user1.name, "/users/#{@user1.id}"%>
+    </p>
+    <% end %>
+    <br />
+    <hr />
+
+    <% if !@messages.empty? %>
+        <div class="w3-container" style="padding: 0px;">
+            <p style="font-size: 18px;"> Messages </p>
+            <br />
+            <div id="messagefeed" onload="scroll()" style = "overflow: auto; max-height: 400px;">   
+                <% @messages.each do | m | %>
+                    <% f = User.find(m.user_id)%>
+
+                    <% if f != current_user && !m.read %>
+                        <% m.read = true %>
+                        <% m.save %>
+                    <% end %>
+
+                    <% if f != current_user %>
+                        <div class="w3-row" style="margin-top: 10px; margin-bottom: 10px;">
+                        <div class="w3-left">
+                            <% if f.avatar.attached? %>
+                                <%= image_tag f.avatar, class: "w3-circle avatar w3-margin-right", :style => "display: inline;" %>
+                            <% else %>
+                                <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Avatar" class="w3-circle w3-margin-right" style="width:60px">
+                            <% end %>
+                        </div>
+
+                        <div class="w3-container w3-card w3-round w3-left" style="background-color: #f3f3f3; padding: 2px 10px 2px; position: relative; margin-top: 5px; margin-bottom: 5px; min-height: 50px; max-width: 70%;" title="<%= m.message_time %>">
+                            <%= m.body %>
+                        </div >
+                        </div >
+                    <% end %>
+
+                    <% if f == current_user %>
+                        <div class="w3-row" style="margin-top: 10px; margin-bottom: 10px;">
+                        <div class="w3-right">
+                            <% if f.avatar.attached? %>
+                                <%= image_tag f.avatar, class: "w3-circle avatar w3-margin-left", :style => "display: inline;" %>
+                            <% else %>
+                                <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Avatar" class="w3-circle w3-margin-left" style="width:60px">
+                            <% end %>
+                        </div>
+
+                        <div class="w3-container w3-card w3-round w3-right" style="background-color: #0C0C0C; color: #ffffff; padding: 2px 10px 2px; position: relative; margin-top: 5px; margin-bottom: 5px; min-height: 50px; max-width: 70%;" title="<%= m.message_time %>">
+                            <%= m.body %>
+                        </div >
+                        </div >
+                    <% end %>
+
+                <% end %>
+            </div >
+        <hr/>
+        </div>
+    <% end %>
+    <div class="w3-container" style="padding: 0px; position: relative;">
+        <% if (current_user == @user1 && current_user.friends_with?(@user2)) || (current_user == @user2 && current_user.friends_with?(@user1)) %>
+            <%= simple_form_for([@conversation, @message]) do |f| %>
+                <%= f.error_notification %>
+                
+                <%= f.input :body, label: false, 
+                input_html: {class: "textarea", id: "messageinput"}, wrapper: false,
+                label_html: {class: "label"}, placeholder: "New message.."             
+                %>
+                <%= f.text_field :user_id, value: current_user.id, type: "hidden" %>
+                <%= f.button :submit, 'Send', class: "w3-button w3-theme topgap", style: "float: right;" %>         
+            <% end %>
+        <% else %>   
+            <p>You must be friends to send messages. </p>
+        <% end %>
+    </div>
+
+
+</div>

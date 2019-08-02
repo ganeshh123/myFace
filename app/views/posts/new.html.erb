@@ -1,0 +1,26 @@
+
+<% if user_signed_in? %>
+
+<div style="display:table; margin:auto;">
+    <div class="w3-container w3-card w3-white w3-round w3-margin" style="min-width: 500px; max-width: 800px;">
+            <div class="w3-container w3-padding">
+              <%= simple_form_for(@post) do |f| %>
+              <%= f.error_notification %>
+              <%= f.input :content, label: "What's up?", 
+                input_html: {class: "textarea"}, wrapper: false,
+                label_html: {class: "label"}, placeholder: "Write here.."             
+              %>
+              <hr>
+              <% if user_signed_in? %>
+              <%= f.button :submit, class: "w3-button w3-theme" %>
+              <% else %>
+              <p style="font-size: 18px;">&nbsp;&nbsp; Log In to Post </p>
+              <% end %>
+              <% end %>
+            </div>
+
+    </div>
+</div >
+<% end %>
+
+

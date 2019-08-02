@@ -1,0 +1,147 @@
+<div class="w3-card w3-round w3-white" style="margin-left: 10px; padding: 10px; position: fixed; min-width: 250px; max-height: 900px; height: 90%; min-height: 700px; width: 100%; max-width: 400px;">
+<p style="font-size: 24px;"> Notifications
+<% if current_user.notificationcount > 0 %>
+    <span style="font-size: 24px;">&nbsp;(<%= current_user.notificationcount %>)</span>
+<% end %>
+</p>
+<hr/>
+
+  <div class="w3-container" style="padding: 0px; max-height: 32%; overflow: auto;">
+  <p style="font-size: 18px;"><%= link_to "Friend Requests ("+current_user.requested_friends.size.to_s+")", "/users/#{current_user.id}/friends" %></p>
+  <% current_user.requested_friends.limit(3).each do | f | %>
+    <div class="w3-container w3-card w3-round w3-margin" style="background-color: #f3f3f3; padding: 2px 5px 5px; position: relative; margin: 0px;" >
+        <div class="w3-left">
+        <% if f.avatar.attached? %>
+            <%= image_tag f.avatar, class: "w3-circle avatar w3-left w3-margin-right", :style => "display: inline;" %>
+        <% else %>
+            <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+        <% end %>
+        </div>
+        <%= link_to f.name, "/users/#{f.id}" %>
+        <br />
+        <%= link_to "/users/reject/#{f.id}",  method: :put, class: "w3-button w3-theme-d2 w3-margin-bottom w3-right", style: "margin: auto;" do%>
+          <i class="fal fa-times"></i>
+        <% end %>
+        <%= link_to "/users/accept/#{f.id}",  method: :delete, class: "w3-button w3-theme-d2 w3-margin-bottom w3-right", style: "margin-left: auto; margin-right: 5px" do%>
+          <i class="fal fa-check"></i>
+        <% end %>
+        <strong><%= link_to "@"+f.username, "/users/#{f.id}" %></strong>
+        
+    </div>
+  <% end %>
+  <hr />
+  </div>
+
+    <% @conversations = Conversation.all.select { |conversation| conversation.user1_id == current_user.id || conversation.user2_id == current_user.id} %>
+    <div class="w3-container" style="padding: 0px; max-width: 350px; max-height: 32%; overflow: auto;">
+        <p style="font-size: 18px;"><%= link_to "Unread Messages (" + current_user.unreadcount.to_s + ")", "/conversations" %></p>
+        <% if !@conversations.empty?%>
+            <% @conversations.each do |c| %>
+                <% @user1 = User.find(c.user1_id)%>
+                <% @user2 = User.find(c.user2_id)%>
+                <% if current_user == @user1 %>
+                    <% buddy = @user2%>
+                <% end %>
+                <% if current_user == @user2 %>
+                    <% buddy = @user1%>
+                <%end %>
+                <% if !c.messages.empty? %>
+                    <% m =  c.messages.last %>
+                    <% f = User.find(m.user_id) %>
+
+                    <% if !m.read && f !=current_user %>
+
+                        <div class="w3-container w3-card w3-round w3-margin" style="background-color: #f3f3f3; padding: 2px 5px 5px; position: relative; margin: 0px;" >
+                            <div class="w3-left">
+
+                                <% if buddy.avatar.attached? %>
+                                    <%= image_tag buddy.avatar, class: "w3-circle avatar w3-left w3-margin-right w3-left", :style => "display: inline;" %>
+                                <% else %>
+                                    <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+                                <% end %>
+                            </div>
+                            <%= link_to buddy.name, "/users/#{buddy.id}" %>
+                            <br />
+
+                                <%= link_to conversations_path(user1_id: @user1.id, user2_id: @user2.id), method: :post, class: "w3-button w3-theme-d2 w3-margin-bottom w3-right w3-margin-left", style: "margin: auto;" do%>
+                                    <i class="far fa-envelope"></i>
+                                <% end %>
+                                <% if f == current_user %>
+                                    <strong>You: </strong><%= m.body %>
+                                <% end %>
+                                <% if f != current_user %>
+                                    <strong><%= f.name.split.first %>: </strong><%= m.body %>
+                                <% end %>
+                        </div >
+                    <% end %>
+                <% end %>
+            <% end %>
+        <% end %>
+        <hr />  
+    </div>
+
+    <div class="w3-container" style="padding: 0px; max-height: 32%; overflow: auto;">
+        <p style="font-size: 18px;">Activity </p>
+        <% @userposts = current_user.posts.order("created_at DESC") %>
+        <% if !@userposts.empty? %>
+            <% @userposts.each do |p|%>
+                <% @activities = Activity.where(trackable_type: 'Post', trackable_id: p.id) %>
+                <% if !@activities.empty? %>
+                    <% @activities.each do |a| %>
+                        <% if Post.find(a.trackable_id).user == current_user %>
+                            <% if a.key =="commented"%>
+
+                            <% buddy = User.find(a.owner_id) %>
+
+                            <div class="w3-container w3-card w3-round w3-margin" style="background-color: #f3f3f3; padding: 2px 5px 5px; position: relative; margin: 0px;" >
+                                <div class="w3-left">
+
+                                    <% if buddy.avatar.attached? %>
+                                        <%= image_tag buddy.avatar, class: "w3-circle avatar w3-left w3-margin-right w3-left", :style => "display: inline;" %>
+                                    <% else %>
+                                        <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+                                    <% end %>
+                                </div>
+
+                                <%= link_to buddy.name, "/users/#{buddy.id}" %> commented on your <%= link_to "post", "/posts/#{a.trackable_id}" %>.
+                                
+                                <i class="fal fa-comment w3-right w3-margin-left"></i>
+                                
+
+                            </div >
+
+                            <% end %>
+
+                             <% if a.key =="liked"%>
+
+                            <% buddy = User.find(a.owner_id) %>
+
+                            <div class="w3-container w3-card w3-round w3-margin" style="background-color: #f3f3f3; padding: 2px 5px 5px; position: relative; margin: 0px;" >
+                                <div class="w3-left">
+
+                                    <% if buddy.avatar.attached? %>
+                                        <%= image_tag buddy.avatar, class: "w3-circle avatar w3-left w3-margin-right w3-left", :style => "display: inline;" %>
+                                    <% else %>
+                                        <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+                                    <% end %>
+                                </div>
+
+                                <%= link_to buddy.name, "/users/#{buddy.id}" %> liked your <%= link_to "post", "/posts/#{a.trackable_id}" %>.
+                                
+                                <i class="fal fa-thumbs-up w3-margin-left w3-right"></i>
+                                
+
+                            </div >
+
+                            <% end %>
+                                
+                        <% end %>
+                    <% end %>
+                <% end %>
+            <% end %>
+        <% end %>
+        
+        <hr />
+    </div>
+
+</div>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MyFace</title>
+    <%= csrf_meta_tags %>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+    <link rel="stylesheet" href="stylesheets\font-awesome\css\all.css">
+
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    
+
+    <div class="w3-top">
+      <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+
+        <%= link_to root_path, class: "w3-bar-item w3-button w3-padding-large w3-hover-white" do%>
+          <i class="fas fa-users w3-margin-right" style="font-size: 36px;">&nbsp; &nbsp; myFace</i>
+        <% end %>
+
+        <%# <%= link_to new_post_path, class: "w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" do%>
+          <%# <i class="fas fa-plus-circle"></i> %>
+        <%# <% end %>
+
+        <% if user_signed_in? %>
+
+        
+        <%= link_to destroy_user_session_path, method: :delete, class: "w3-bar-item w3-button w3-hide-small w3-right w3-hover-white", style: "font-size: 35px; padding-top: 5px; padding-bottom: 5px;" do%>
+          <i class="far fa-sign-out"></i>
+        <% end %>
+        <%= link_to edit_user_registration_path, class: "w3-bar-item w3-button w3-hide-small w3-right w3-hover-white", style: "font-size: 35px; padding-top: 5px; padding-bottom: 5px;" do%>
+          <% if current_user.avatar.attached? %>
+            <%= image_tag current_user.avatar, class: "w3-circle  w3-left w3-margin-right", :style => "width: 40px; display: inline; padding-top: 6px; padding-bottom: 6px;" %>
+          <% else %>
+          <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+          <% end %>
+          <span style="font-size: 21px; transform: translate(-50%, -50%);">&nbsp;<%= current_user.name %></span>
+        <% end %>
+
+        <%= link_to '/conversations', method: :get, class: "w3-bar-item w3-button w3-hide-small w3-right w3-hover-white", style: "font-size: 35px; padding-top: 5px; padding-bottom: 5px;" do%>
+            <i class="far fa-envelope"></i>
+            <% if current_user.unreadcount > 0 %>
+              <span class="w3-badge w3-margin-left w3-red" style="font-size: 20px;"><%= current_user.unreadcount %></span>
+            <% end %>
+        <% end %>
+
+        <%= link_to '/users/'+current_user.id.to_s+'/friends', method: :get, class: "w3-bar-item w3-button w3-hide-small w3-right w3-hover-white", style: "font-size: 35px; padding-top: 5px; padding-bottom: 5px;" do%>
+            <i class="far fa-user-friends"></i>
+            <% if current_user.requested_friends.size > 0 %>
+              <span class="w3-badge w3-margin-left w3-red" style="font-size: 20px;"><%= current_user.requested_friends.size %></span>
+            <% end %>
+        <% end %>
+
+        <% end %>
+
+        <% if !user_signed_in? %>
+        <%= link_to new_user_session_path, class: "w3-bar-item w3-button w3-hide-small w3-right w3-hover-white", style: "font-size: 35px; padding-top: 5px; padding-bottom: 5px;" do%>
+          <i class="far fa-sign-in"></i>
+        <% end %>
+
+        <% end %>
+      </div>
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <% if flash[:notice] %>
+      <div class="notification is-primary global-notification">
+        <p class="notice"><%= notice %></p>
+      </div>
+    <% end %>
+    <% if flash[:alert] %>
+      <div class="notification is-danger global-notification">
+        <p class="alert"><%= alert %></p>
+      </div>
+    <% end %>
+
+    <%= yield %>
+  </body>
+</html>
