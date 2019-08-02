@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2019_07_11_214054) do
 
-  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "active_storage_attachments",  force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2019_07_11_214054) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "active_storage_blobs",  force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2019_07_11_214054) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "activities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "activities",  force: :cascade do |t|
     t.string "trackable_type"
     t.bigint "trackable_id"
     t.string "owner_type"
@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 2019_07_11_214054) do
     t.index ["trackable_type", "trackable_id"], name: "index_activities_on_trackable_type_and_trackable_id"
   end
 
-  create_table "comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "comments",  force: :cascade do |t|
     t.integer "commentable_id"
     t.string "commentable_type"
     t.text "body"
@@ -66,14 +66,14 @@ ActiveRecord::Schema.define(version: 2019_07_11_214054) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
-  create_table "conversations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "conversations",  force: :cascade do |t|
     t.integer "user1_id"
     t.integer "user2_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "friendships", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "friendships", id: :integer,  force: :cascade do |t|
     t.string "friendable_type"
     t.integer "friendable_id"
     t.integer "friend_id"
@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 2019_07_11_214054) do
     t.index ["friendable_id", "friend_id"], name: "index_friendships_on_friendable_id_and_friend_id", unique: true
   end
 
-  create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "messages",  force: :cascade do |t|
     t.text "body"
     t.bigint "conversation_id"
     t.bigint "user_id"
@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(version: 2019_07_11_214054) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
-  create_table "posts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "posts",  force: :cascade do |t|
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -109,7 +109,7 @@ ActiveRecord::Schema.define(version: 2019_07_11_214054) do
     t.float "cached_weighted_average", default: 0.0
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "users",  force: :cascade do |t|
     t.string "username", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -124,7 +124,7 @@ ActiveRecord::Schema.define(version: 2019_07_11_214054) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
-  create_table "votes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "votes", id: :integer,  force: :cascade do |t|
     t.string "votable_type"
     t.integer "votable_id"
     t.string "voter_type"
